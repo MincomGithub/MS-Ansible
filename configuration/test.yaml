@@ -1,0 +1,12 @@
+---
+- name: Test Ansible
+  hosts: all
+
+  tasks:
+    - name: Test Ansible
+      ansible.builtin.shell:
+        cmd: |
+          pwd
+        executable: /bin/bash
+      changed_when: false
+      check_mode: false
