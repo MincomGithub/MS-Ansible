@@ -1,7 +1,8 @@
 ---
 - name: Install Main VM's softwares
   hosts: all
-
+  become: true
+  
   tasks:
 
   
