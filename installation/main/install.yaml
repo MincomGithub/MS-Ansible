@@ -1,5 +1,5 @@
 ---
-- name: Update and upgrade apt packages
+- name: Install Main VM's softwares
   hosts: all
 
   tasks:
@@ -11,7 +11,6 @@
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
-            update: no
         
       rescue:
         - name: rescue task that runs on setup fail
