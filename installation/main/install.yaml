@@ -3,21 +3,45 @@
   hosts: all
 
   tasks:
-    - block:
-        - name: Homepage
-          ansible.builtin.debug:
-            msg: "Installation of Hopepage"
 
-        - name: fail at task 2
-          ansible.builtin.fail:
-            msg: "fail at task 2 (to be rescued)"
+  
+    # Git & System Setup
+    - block:
+        - name: Checking out MS Software Archittecture Repo
+          ansible.builtin.git:
+            repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
+            dest: ~/mssoftware
+            update: no
         
       rescue:
-        - name: rescue task that runs if any task fails inside block
+        - name: rescue task that runs on setup fail
           ansible.builtin.debug:
             msg: "Task Rescued"
             
       always:
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
-            msg: "This task will always run at the end" 
+            msg: "Setup tasks done!" 
+
+
+
+
+    # # Homepage
+    # - block:
+    #     - name: Homepage
+    #       ansible.builtin.debug:
+    #         msg: "Installation of Hopepage"
+
+    #     - name: fail at task 2
+    #       ansible.builtin.fail:
+    #         msg: "fail at task 2 (to be rescued)"
+        
+    #   rescue:
+    #     - name: rescue task that runs if any task fails inside block
+    #       ansible.builtin.debug:
+    #         msg: "Task Rescued"
+            
+    #   always:
+    #     - name: This task always runs at the end regardless of outcome
+    #       ansible.builtin.debug:
+    #         msg: "This task will always run at the end" 
