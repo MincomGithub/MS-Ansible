@@ -7,6 +7,10 @@
   
     # Git & System Setup
     - block:
+        - name: Creates directory
+          ansible.builtin.file:
+            path: /root/mssoftware
+            state: directory
         - name: Checking out MS Software Archittecture Repo
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
