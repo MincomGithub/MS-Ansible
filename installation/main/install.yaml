@@ -16,6 +16,7 @@
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
+            update: yes
         
       rescue:
         - name: rescue task that runs on setup fail
@@ -32,10 +33,33 @@
 
     # Homepage
     - block:
-        - name: Creates directory
+        - name: Creates homepage config directory
           ansible.builtin.file:
             path: ~/homepage/config
             state: directory
+
+        - name: Tear down existing services
+          community.general.docker_compose:
+            project_src: ~/mssoftware/main/homepage
+            state: absent
+
+        - name: Create and start services
+          community.general.docker_compose:
+            project_src: ~/mssoftware/main/homepage
+          register: output
+
+        - ansible.builtin.debug:
+            var: output
+
+        - name: Run `docker-compose up` again
+          community.general.docker_compose:
+            project_src: ~/mssoftware/main/homepage
+            build: no
+          register: output
+
+        - ansible.builtin.debug:
+            var: output
+
             
       rescue:
         - name: rescue task that runs if any task fails inside block
