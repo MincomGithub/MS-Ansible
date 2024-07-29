@@ -41,12 +41,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/main/homepage
-            cmd: docker compose down -d
+            cmd: docker-compose down -d
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/main/homepage
-            cmd: docker compose up -d
+            cmd: docker-compose up -d
 
         # - name: Tear down existing services
         #   community.general.docker_compose:
