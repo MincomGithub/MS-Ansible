@@ -49,33 +49,10 @@
             chdir: ~/mssoftware/main/homepage
             cmd: docker-compose up -d
 
-        - name: Allow all access to 3001
+        - name: Allow all access to 7001
           ufw:
             rule: allow
-            port: 3001
-            
-        # - name: Tear down existing services
-        #   community.general.docker_compose:
-        #     project_src: ~/mssoftware/main/homepage
-        #     state: absent
-
-        # - name: Create and start services
-        #   community.general.docker_compose:
-        #     project_src: ~/mssoftware/main/homepage
-        #   register: output
-
-        # - ansible.builtin.debug:
-        #     var: output
-
-        # - name: Run `docker-compose up` again
-        #   community.general.docker_compose:
-        #     project_src: ~/mssoftware/main/homepage
-        #     build: no
-        #   register: output
-
-        # - ansible.builtin.debug:
-        #     var: output
-
+            port: 7001
             
       rescue:
         - name: rescue task that runs if any task fails inside block
@@ -86,3 +63,38 @@
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
             msg: "This task will always run at the end - Homepage" 
+
+
+
+
+    # Dashy
+    - block:
+        - name: Creates homepage config directory
+          ansible.builtin.file:
+            path: ~/dashy
+            state: directory
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/mssoftware/main/dashy
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/mssoftware/main/dashy
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 7002
+          ufw:
+            rule: allow
+            port: 7002
+            
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued Dashy"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - Dashy" 
