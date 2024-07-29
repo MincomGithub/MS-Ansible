@@ -49,6 +49,11 @@
             chdir: ~/mssoftware/main/homepage
             cmd: docker-compose up -d
 
+        - name: Allow all access to 3001
+          ufw:
+            rule: allow
+            port: 3001
+            
         # - name: Tear down existing services
         #   community.general.docker_compose:
         #     project_src: ~/mssoftware/main/homepage
