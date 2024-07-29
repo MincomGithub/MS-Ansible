@@ -5,6 +5,7 @@
 
   tasks:
 
+
   
     # Git & System Setup
     - block:
@@ -41,7 +42,7 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose down -d
+            cmd: docker-compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
