@@ -43,30 +43,30 @@
             project_src: ~/mssoftware/main/homepage
             state: absent
 
-        - name: Create and start services
-          community.general.docker_compose:
-            project_src: ~/mssoftware/main/homepage
-          register: output
+        # - name: Create and start services
+        #   community.general.docker_compose:
+        #     project_src: ~/mssoftware/main/homepage
+        #   register: output
 
-        - ansible.builtin.debug:
-            var: output
+        # - ansible.builtin.debug:
+        #     var: output
 
-        - name: Run `docker-compose up` again
-          community.general.docker_compose:
-            project_src: ~/mssoftware/main/homepage
-            build: no
-          register: output
+        # - name: Run `docker-compose up` again
+        #   community.general.docker_compose:
+        #     project_src: ~/mssoftware/main/homepage
+        #     build: no
+        #   register: output
 
-        - ansible.builtin.debug:
-            var: output
+        # - ansible.builtin.debug:
+        #     var: output
 
             
-      rescue:
-        - name: rescue task that runs if any task fails inside block
-          ansible.builtin.debug:
-            msg: "Task Rescued"
-            
-      always:
-        - name: This task always runs at the end regardless of outcome
-          ansible.builtin.debug:
-            msg: "This task will always run at the end" 
+    rescue:
+      - name: rescue task that runs if any task fails inside block
+        ansible.builtin.debug:
+          msg: "Task Rescued Homepage"
+          
+    always:
+      - name: This task always runs at the end regardless of outcome
+        ansible.builtin.debug:
+          msg: "This task will always run at the end - Homepage" 
