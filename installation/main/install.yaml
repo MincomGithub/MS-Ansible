@@ -38,10 +38,20 @@
             path: ~/homepage/config
             state: directory
 
-        - name: Tear down existing services
-          community.general.docker_compose:
-            project_src: ~/mssoftware/main/homepage
-            state: absent
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/mssoftware/main/homepage
+            cmd: docker compose down -d
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/mssoftware/main/homepage
+            cmd: docker compose up -d
+
+        # - name: Tear down existing services
+        #   community.general.docker_compose:
+        #     project_src: ~/mssoftware/main/homepage
+        #     state: absent
 
         # - name: Create and start services
         #   community.general.docker_compose:
