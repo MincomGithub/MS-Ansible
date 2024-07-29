@@ -32,11 +32,14 @@
 
     # Homepage
     - block:
-        - name: Creates directory
-          ansible.builtin.file:
-            path: ~/homepage/config
-            state: directory
-            
+        - name: Homepage
+          ansible.builtin.debug:
+            msg: "Installation of Hopepage"
+
+        - name: fail at task 2
+          ansible.builtin.fail:
+            msg: "fail at task 2 (to be rescued)"
+        
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
