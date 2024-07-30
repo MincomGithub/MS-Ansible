@@ -31,21 +31,21 @@
 
 
 
-    # padloc
+    # passbolt
     - block:
-        - name: Creates padloc directory
+        - name: Creates passbolt directory
           ansible.builtin.file:
-            path: ~/padloc
+            path: ~/passbolt
             state: directory
 
         - name: Docker command to pull down
           ansible.builtin.command:
-            chdir: ~/mssoftware/utility/padloc
+            chdir: ~/mssoftware/utility/passbolt
             cmd: docker-compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
-            chdir: ~/mssoftware/utility/padloc
+            chdir: ~/mssoftware/utility/passbolt
             cmd: docker-compose up -d
 
         - name: Allow all access to 7003
