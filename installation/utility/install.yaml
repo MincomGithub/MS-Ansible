@@ -17,7 +17,6 @@
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
-            update: yes
         
       rescue:
         - name: rescue task that runs on setup fail
