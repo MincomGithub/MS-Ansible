@@ -26,3 +26,7 @@
 
     # - ansible.builtin.debug:
     #     var: output
+
+
+# Online Server
+    # 147.182.252.105

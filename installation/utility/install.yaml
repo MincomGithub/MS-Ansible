@@ -1,0 +1,68 @@
+---
+- name: Install Utility VM's softwares
+  hosts: all
+  become: true
+
+  tasks:
+
+
+  
+    # Git & System Setup
+    - block:
+        - name: Creates directory
+          ansible.builtin.file:
+            path: /root/mssoftware
+            state: directory
+        - name: Checking out MS Software Archittecture Repo
+          ansible.builtin.git:
+            repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
+            dest: ~/mssoftware
+            update: yes
+        
+      rescue:
+        - name: rescue task that runs on setup fail
+          ansible.builtin.debug:
+            msg: "Task Rescued"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "Setup tasks done!" 
+
+
+
+
+    # padloc
+    - block:
+        - name: Creates padloc directory
+          ansible.builtin.file:
+            path: ~/padloc
+            state: directory
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/mssoftware/utility/padloc
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/mssoftware/utility/padloc
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 7003
+          ufw:
+            rule: allow
+            port: 7003
+            
+            
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
