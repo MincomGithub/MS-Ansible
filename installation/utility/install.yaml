@@ -81,8 +81,9 @@
             state: present
             recreate: yes
             restart: yes
-            exposed_ports:
-              - 7003:3001
+            restart_policy: always
+            ports:
+              - "7003:3001"
             volumes:
               - uptime-kuma:/app/data
 
