@@ -48,10 +48,10 @@
             chdir: ~/mssoftware/utility/passbolt
             cmd: docker-compose up -d
 
-        - name: Allow all access to 7003
+        - name: Allow all access to 7103
           ufw:
             rule: allow
-            port: 7003
+            port: 7101
             
             
       rescue:
@@ -84,14 +84,14 @@
             restart: yes
             restart_policy: always
             ports:
-              - "7003:3001"
+              - "7102:3001"
             volumes:
               - uptime-kuma:/app/data
 
-        - name: Allow all access to 7003
+        - name: Allow all access to 7102
           ufw:
             rule: allow
-            port: 7003
+            port: 7102
             
             
       rescue:
