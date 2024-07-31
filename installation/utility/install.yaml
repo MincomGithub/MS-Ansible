@@ -65,3 +65,34 @@
             msg: "This task will always run at the end - padloc" 
 
 
+
+    # passbolt
+    - block:
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/mssoftware/utility/uptimekuma
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/mssoftware/utility/uptimekuma
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 7003
+          ufw:
+            rule: allow
+            port: 7003
+            
+            
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
