@@ -83,8 +83,6 @@
             restart: yes
             exposed_ports:
               - 7003:3001
-            volumes_from:
-              - uptime-kuma:/app/data
 
         - name: Allow all access to 7003
           ufw:
