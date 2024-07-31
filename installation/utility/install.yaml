@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-      - skip: true
+      - skip: false
 
 
   tasks:
@@ -56,7 +56,7 @@
             rule: allow
             port: 7101
             
-      when: skip == true
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -96,7 +96,7 @@
             rule: allow
             port: 7102
             
-      when: skip == true
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -110,10 +110,6 @@
 
     # nginxproxymanager
     - block:
-        # - name: Creates nginxproxymanager directory
-        #   ansible.builtin.file:
-        #     path: ~/nginxproxymanager
-        #     state: directory
 
         - name: Docker command to pull down
           ansible.builtin.command:
@@ -130,7 +126,7 @@
             rule: allow
             port: 7103
             
-      when: skip == true   
+      when: skip|bool   
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
