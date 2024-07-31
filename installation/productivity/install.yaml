@@ -86,7 +86,7 @@
 
         - name: Checking out MS Software Archittecture Repo
           ansible.builtin.git:
-            repo: 'git clone https://github.com:preview/makeplane/plane.git'
+            repo: 'git clone https://github.com/makeplane/plane.git'
             dest: ~/plane-mincom
 
 
