@@ -32,7 +32,7 @@
             msg: "Setup tasks done!" 
 
 
-    # uptime kuma
+    # Baserow
     - block:
 
         - name: Remove container
@@ -40,7 +40,7 @@
             name: baserow
             state: absent
 
-        - name: Re-create a redis container
+        - name: Re-create a baserow container
           docker_container:
             name: baserow
             image: baserow/baserow:1.20.0
@@ -63,7 +63,7 @@
             rule: allow
             port: 7201
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -77,38 +77,30 @@
 
 
 
-    # # baserow
-    # - block:
-    #     - name: Creates baserow directory
-    #       ansible.builtin.file:
-    #         path: ~/baserow
-    #         state: directory
+    # plane
+    - block:
+        - name: Creates directory
+          ansible.builtin.file:
+            path: /root/plane-mincom
+            state: directory
 
-    #     - name: Docker command to pull down
-    #       ansible.builtin.command:
-    #         chdir: ~/mssoftware/utility/baserow
-    #         cmd: docker-compose down
+        - name: Checking out MS Software Archittecture Repo
+          ansible.builtin.git:
+            repo: 'git clone https://github.com:preview/makeplane/plane.git'
+            dest: ~/plane-mincom
 
-    #     - name: Docker command to bring up
-    #       ansible.builtin.command:
-    #         chdir: ~/mssoftware/utility/baserow
-    #         cmd: docker-compose up -d
 
-    #     - name: Allow all access to 7103
-    #       ufw:
-    #         rule: allow
-    #         port: 7101
             
-    #   when: skip|bool
-    #   rescue:
-    #     - name: rescue task that runs if any task fails inside block
-    #       ansible.builtin.debug:
-    #         msg: "Task Rescued baserow"
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued plane"
             
-    #   always:
-    #     - name: This task always runs at the end regardless of outcome
-    #       ansible.builtin.debug:
-    #         msg: "This task will always run at the end - baserow" 
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - plane" 
 
 
 
