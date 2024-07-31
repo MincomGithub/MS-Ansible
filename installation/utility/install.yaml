@@ -74,10 +74,17 @@
             name: uptime-kuma
             state: absent
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/utility/uptimekuma
-            cmd: docker run -d --restart=always -p 7003:3001 -v uptime-kuma:/app/data --name uptime-kuma louislam/uptime-kuma:1
+        - name: Re-create a redis container
+          docker_container:
+            name: uptime-kuma
+            image: louislam/uptime-kuma:1
+            state: present
+            recreate: yes
+            restart: yes
+            exposed_ports:
+              - 7003:3001
+            volumes_from:
+              - uptime-kuma:/app/data
 
         - name: Allow all access to 7003
           ufw:
