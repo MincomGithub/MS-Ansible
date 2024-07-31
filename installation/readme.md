@@ -32,6 +32,16 @@
     # 147.182.252.105
 
 
+# Infrastructure : Port
+    # Main                  : 7000*
+    # Utility               : 7100*
+    # Productivity          : 7200*
+    # Monitoring Metrics    : 7300*
+    # Customer Service      : **80  Chatwoot's Default
+    # Monitoring Metrics    : 7400
+
+
+
 # NB Docker
 state:
     "absent"

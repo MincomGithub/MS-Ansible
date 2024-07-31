@@ -1,23 +1,25 @@
 ---
-- name: Install Main VM's softwares
+- name: Install Utility VM's softwares
   hosts: all
   become: true
+  vars:
+      - skip: false
+
 
   tasks:
 
 
-  
     # Git & System Setup
     - block:
         - name: Creates directory
           ansible.builtin.file:
             path: /root/mssoftware
             state: directory
+
         - name: Checking out MS Software Archittecture Repo
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
-            update: yes
         
       rescue:
         - name: rescue task that runs on setup fail
@@ -30,34 +32,45 @@
             msg: "Setup tasks done!" 
 
 
-    # Netdata
+    # chatwoot
+    # https://www.chatwoot.com/docs/self-hosted/deployment/docker/
     - block:
-        - name: Creates homepage config directory
+        - name: Creates directory
           ansible.builtin.file:
-            path: ~/netdata
+            path: /root/chatwoot
             state: directory
+
+        - name: Download the env file template
+          ansible.builtin.command:
+            chdir: ~/chatwoot
+            cmd: wget -O .env https://raw.githubusercontent.com/chatwoot/chatwoot/develop/.env.example
+        
+        - name: Download the Docker compose template
+          ansible.builtin.command:
+            chdir: ~/chatwoot
+            cmd: wget -O docker-compose.yaml https://raw.githubusercontent.com/chatwoot/chatwoot/develop/docker-compose.production.yaml
 
         - name: Docker command to pull down
           ansible.builtin.command:
-            chdir: ~/mssoftware/monitoringmetrics/netdata
-            cmd: docker-compose down
+            chdir: ~/chatwoot
+            cmd: docker compose run --rm rails bundle exec rails db:chatwoot_prepare
 
-        - name: Docker command to bring up
+        - name: Docker command to pull down
           ansible.builtin.command:
-            chdir: ~/mssoftware/monitoringmetrics/netdata
-            cmd: docker-compose up -d
+            chdir: ~/chatwoot
+            cmd: docker compose up -d
 
-        - name: Allow all access to 7002
-          ufw:
-            rule: allow
-            port: 7401
-            
+
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
-            msg: "Task Rescued netdata"
+            msg: "Task Rescued chatwoot"
             
       always:
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
-            msg: "This task will always run at the end - netdata" 
+            msg: "This task will always run at the end - chatwoot" 
+
+
+

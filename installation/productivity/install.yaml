@@ -33,6 +33,7 @@
 
 
     # Baserow
+    # https://baserow.io/docs/installation/install-with-docker
     - block:
 
         - name: Remove container
@@ -78,15 +79,26 @@
 
 
     # plane
+    # https://github.com/makeplane/plane?tab=readme-ov-file
     - block:
     
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/
             cmd: git clone https://github.com/makeplane/plane.git 
+        
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/plane
+            cmd: ./setup.sh
 
-            
-      when: not skip|bool
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/plane
+            cmd: docker compose -f docker-compose-local.yml up -d
+
+
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -96,40 +108,4 @@
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
             msg: "This task will always run at the end - plane" 
-
-
-
-
-    # # nginxproxymanager
-    # - block:
-
-    #     - name: Docker command to pull down
-    #       ansible.builtin.command:
-    #         chdir: ~/mssoftware/utility/nginxproxymanager
-    #         cmd: docker-compose down
-
-    #     - name: Docker command to bring up
-    #       ansible.builtin.command:
-    #         chdir: ~/mssoftware/utility/nginxproxymanager
-    #         cmd: docker-compose up -d
-
-    #     - name: Allow all access to 7103
-    #       ufw:
-    #         rule: allow
-    #         port: 7103
-            
-    #   when: skip|bool   
-    #   rescue:
-    #     - name: rescue task that runs if any task fails inside block
-    #       ansible.builtin.debug:
-    #         msg: "Task Rescued padloc"
-            
-    #   always:
-    #     - name: This task always runs at the end regardless of outcome
-    #       ansible.builtin.debug:
-    #         msg: "This task will always run at the end - padloc" 
-
-
-            
-
 
