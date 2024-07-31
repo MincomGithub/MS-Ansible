@@ -79,16 +79,11 @@
 
     # plane
     - block:
-        - name: Creates directory
-          ansible.builtin.file:
-            path: /root/plane-mincom
-            state: directory
-
-        - name: Checking out MS Software Archittecture Repo
-          ansible.builtin.git:
-            repo: 'git clone https://github.com/makeplane/plane.git'
-            dest: ~/plane-mincom
-
+    
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/
+            cmd: git clone https://github.com/makeplane/plane.git 
 
             
       when: not skip|bool
