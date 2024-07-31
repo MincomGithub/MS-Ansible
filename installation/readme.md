@@ -30,3 +30,11 @@
 
 # Online Server
     # 147.182.252.105
+
+
+# NB Docker
+state:
+    "absent"
+    "stopped"
+    "restarted"
+    "present"

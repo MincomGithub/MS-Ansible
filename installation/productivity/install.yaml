@@ -1,7 +1,10 @@
 ---
-- name: Install Main VM's softwares
+- name: Install Utility VM's softwares
   hosts: all
   become: true
+  vars:
+      - skip: false
+
 
   tasks:
 
@@ -17,7 +20,6 @@
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
-            update: yes
         
       rescue:
         - name: rescue task that runs on setup fail
@@ -30,71 +32,116 @@
             msg: "Setup tasks done!" 
 
 
-
-
-    # Homepage
+    # uptime kuma
     - block:
-        - name: Creates homepage config directory
-          ansible.builtin.file:
-            path: ~/homepage/config
-            state: directory
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose down
+        - name: Remove container
+          community.docker.docker_container:
+            name: baserow
+            state: absent
 
-        - name: Docker command to bring up
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose up -d
+        - name: Re-create a redis container
+          docker_container:
+            name: baserow
+            image: baserow/baserow:1.26.1
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "7201:80"
+              - "7202:443"
+            volumes:
+              - baserow_data:/baserow/data 
+            env:
+              BASEROW_PUBLIC_URL: "http://146.190.144.209"
 
-        - name: Allow all access to 7001
+        - name: Allow all access to 7201
           ufw:
             rule: allow
-            port: 7001
+            port: 7201
             
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
-            msg: "Task Rescued Homepage"
+            msg: "Task Rescued padloc"
             
       always:
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
-            msg: "This task will always run at the end - Homepage" 
+            msg: "This task will always run at the end - padloc" 
 
 
 
 
-    # Dashy
-    - block:
-        - name: Creates homepage config directory
-          ansible.builtin.file:
-            path: ~/dashy
-            state: directory
+    # # baserow
+    # - block:
+    #     - name: Creates baserow directory
+    #       ansible.builtin.file:
+    #         path: ~/baserow
+    #         state: directory
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose down
+    #     - name: Docker command to pull down
+    #       ansible.builtin.command:
+    #         chdir: ~/mssoftware/utility/baserow
+    #         cmd: docker-compose down
 
-        - name: Docker command to bring up
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose up -d
+    #     - name: Docker command to bring up
+    #       ansible.builtin.command:
+    #         chdir: ~/mssoftware/utility/baserow
+    #         cmd: docker-compose up -d
 
-        - name: Allow all access to 7002
-          ufw:
-            rule: allow
-            port: 7002
+    #     - name: Allow all access to 7103
+    #       ufw:
+    #         rule: allow
+    #         port: 7101
             
-      rescue:
-        - name: rescue task that runs if any task fails inside block
-          ansible.builtin.debug:
-            msg: "Task Rescued Dashy"
+    #   when: skip|bool
+    #   rescue:
+    #     - name: rescue task that runs if any task fails inside block
+    #       ansible.builtin.debug:
+    #         msg: "Task Rescued baserow"
             
-      always:
-        - name: This task always runs at the end regardless of outcome
-          ansible.builtin.debug:
-            msg: "This task will always run at the end - Dashy" 
+    #   always:
+    #     - name: This task always runs at the end regardless of outcome
+    #       ansible.builtin.debug:
+    #         msg: "This task will always run at the end - baserow" 
+
+
+
+
+    # # nginxproxymanager
+    # - block:
+
+    #     - name: Docker command to pull down
+    #       ansible.builtin.command:
+    #         chdir: ~/mssoftware/utility/nginxproxymanager
+    #         cmd: docker-compose down
+
+    #     - name: Docker command to bring up
+    #       ansible.builtin.command:
+    #         chdir: ~/mssoftware/utility/nginxproxymanager
+    #         cmd: docker-compose up -d
+
+    #     - name: Allow all access to 7103
+    #       ufw:
+    #         rule: allow
+    #         port: 7103
+            
+    #   when: skip|bool   
+    #   rescue:
+    #     - name: rescue task that runs if any task fails inside block
+    #       ansible.builtin.debug:
+    #         msg: "Task Rescued padloc"
+            
+    #   always:
+    #     - name: This task always runs at the end regardless of outcome
+    #       ansible.builtin.debug:
+    #         msg: "This task will always run at the end - padloc" 
+
+
+            
+
+
