@@ -2,6 +2,9 @@
 - name: Install Utility VM's softwares
   hosts: all
   become: true
+  vars:
+      - skip: true
+
 
   tasks:
 
@@ -53,7 +56,7 @@
             rule: allow
             port: 7101
             
-            
+      when: skip == true
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -93,7 +96,7 @@
             rule: allow
             port: 7102
             
-            
+      when: skip == true
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -127,7 +130,7 @@
             rule: allow
             port: 7103
             
-            
+      when: skip == true   
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
