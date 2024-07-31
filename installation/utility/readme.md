@@ -15,3 +15,14 @@ Repository   : ms-ansible
 Environment  : env
 
 View         : Installation
+
+
+
+
+
+## Nginx Proxy Manager
+
+Email:    admin@example.com
+Password: changeme
+
+
