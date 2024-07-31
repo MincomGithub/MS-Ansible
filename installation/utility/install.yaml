@@ -78,7 +78,8 @@
           docker_container:
             name: uptime-kuma
             image: louislam/uptime-kuma:1
-            state: present
+            state: started
+            detach: yes
             recreate: yes
             restart: yes
             restart_policy: always
