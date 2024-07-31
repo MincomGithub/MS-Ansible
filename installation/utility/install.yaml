@@ -69,12 +69,10 @@
     # uptime kuma
     - block:
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/utility/uptimekuma
-            cmd: |
-                docker stop uptime-kuma
-                docker rm uptime-kuma
+        - name: Remove container
+          community.docker.docker_container:
+            name: uptime-kuma
+            state: absent
 
         - name: Docker command to pull down
           ansible.builtin.command:
