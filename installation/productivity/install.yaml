@@ -43,12 +43,12 @@
         - name: Re-create a redis container
           docker_container:
             name: baserow
-            image: baserow/baserow:1.26.1
+            image: baserow/baserow:1.20.0
             state: started
             detach: yes
             recreate: yes
             restart: yes
-            restart_policy: always
+            restart_policy: unless-stopped
             ports:
               - "7201:80"
               - "7202:443"
