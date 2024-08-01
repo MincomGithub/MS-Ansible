@@ -33,15 +33,25 @@
     # Netdata
     - block:
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/
-            cmd: apt update
+        # - name: Docker command to pull down
+        #   ansible.builtin.command:
+        #     chdir: ~/
+        #     cmd: apt update
+        
+        # - name: Docker command to pull down
+        #   ansible.builtin.command:
+        #     chdir: ~/
+        #     cmd: apt install netdata
 
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/
-            cmd: apt install netdata
+        - name: Update all packages to their latest version
+          ansible.builtin.apt:
+            name: "*"
+            state: latest
+
+        - name: Install netdata (state=present is optional)
+          ansible.builtin.apt:
+            name: netdata
+            state: present
 
         - name: Allow all access to 19999
           ufw:
