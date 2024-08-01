@@ -53,7 +53,7 @@
               - "8080:8080"
               - "1935:1935"
             volumes:
-              - :/app/data
+              - ./data:/app/data
 
         - name: Allow all access to 7102
           ufw:
