@@ -1,10 +1,12 @@
 ---
-- name: Install Main VM's softwares
+- name: Install Utility VM's softwares
   hosts: all
   become: true
+  vars:
+      - skip: false
+
 
   tasks:
-
 
   
     # Git & System Setup
@@ -17,8 +19,8 @@
           ansible.builtin.git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
-            update: yes
         
+      when: not skip|bool
       rescue:
         - name: rescue task that runs on setup fail
           ansible.builtin.debug:
@@ -32,69 +34,3 @@
 
 
 
-    # Homepage
-    - block:
-        - name: Creates homepage config directory
-          ansible.builtin.file:
-            path: ~/homepage/config
-            state: directory
-
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose down
-
-        - name: Docker command to bring up
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose up -d
-
-        - name: Allow all access to 7001
-          ufw:
-            rule: allow
-            port: 7001
-            
-      rescue:
-        - name: rescue task that runs if any task fails inside block
-          ansible.builtin.debug:
-            msg: "Task Rescued Homepage"
-            
-      always:
-        - name: This task always runs at the end regardless of outcome
-          ansible.builtin.debug:
-            msg: "This task will always run at the end - Homepage" 
-
-
-
-
-    # Dashy
-    - block:
-        - name: Creates homepage config directory
-          ansible.builtin.file:
-            path: ~/dashy
-            state: directory
-
-        - name: Docker command to pull down
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose down
-
-        - name: Docker command to bring up
-          ansible.builtin.command:
-            chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose up -d
-
-        - name: Allow all access to 7002
-          ufw:
-            rule: allow
-            port: 7002
-            
-      rescue:
-        - name: rescue task that runs if any task fails inside block
-          ansible.builtin.debug:
-            msg: "Task Rescued Dashy"
-            
-      always:
-        - name: This task always runs at the end regardless of outcome
-          ansible.builtin.debug:
-            msg: "This task will always run at the end - Dashy" 

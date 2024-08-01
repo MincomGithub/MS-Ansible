@@ -6,7 +6,6 @@
   tasks:
 
 
-  
     # Git & System Setup
     - block:
         - name: Creates directory
@@ -33,16 +32,6 @@
     # Netdata
     - block:
 
-        # - name: Docker command to pull down
-        #   ansible.builtin.command:
-        #     chdir: ~/
-        #     cmd: apt update
-        
-        # - name: Docker command to pull down
-        #   ansible.builtin.command:
-        #     chdir: ~/
-        #     cmd: apt install netdata
-
         - name: Update all packages to their latest version
           ansible.builtin.apt:
             name: "*"
@@ -63,8 +52,48 @@
         # 2. systemctl restart netdata
         # 3. systemctl status netdata
 
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued netdata"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - netdata" 
+
+
+            # Netdata
+    
+    
+    # Grafana & Prometheus
+    - block:
+
+        - name: Docker command to pull down grafanaprometheus
+          ansible.builtin.command:
+            chdir: ~/mssoftware/monitoringmetrics/grafanaprometheus
+            cmd: docker-compose down
+
+        - name: Docker command to bring up grafanaprometheus
+          ansible.builtin.command:
+            chdir: ~/mssoftware/monitoringmetrics/grafanaprometheus
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 3000
+          ufw:
+            rule: allow
+            port: 3000
+        
+        - name: Allow all access to 9090
+          ufw:
+            rule: allow
+            port: 9090
 
             
+            
+      when: skip|bool  
+      # Credentials
+      # admin/admin
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:

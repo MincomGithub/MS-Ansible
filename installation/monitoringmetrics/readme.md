@@ -13,3 +13,8 @@ Inventory    : Mincom Kobo
 Environment  : env
 
 View         : Installation
+
+
+
+## Grafana Credentials
+    # admin/admin
