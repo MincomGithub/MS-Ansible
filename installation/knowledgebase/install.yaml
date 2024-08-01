@@ -45,10 +45,10 @@
             chdir: ~/mssoftware/knowledgebase/trilium
             cmd: docker-compose up -d
 
-        - name: Allow all access to 7103
+        - name: Allow all access to 4292
           ufw:
             rule: allow
-            port: 7103
+            port: 4292
             
       when: not skip|bool   
       rescue:
