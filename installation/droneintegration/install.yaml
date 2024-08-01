@@ -32,6 +32,48 @@
             msg: "Setup tasks done!" 
 
 
+    # Owncast
+    - block:
+
+        - name: Remove Owncast's container
+          community.docker.docker_container:
+            name: owncast
+            state: absent
+
+        - name: Re-create a Owncast's container
+          docker_container:
+            name: owncast
+            image: owncast/owncast:latest
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "8080:8080"
+              - "1935:1935"
+            volumes:
+              - :/app/data
+
+        - name: Allow all access to 7102
+          ufw:
+            rule: allow
+            port: 7102
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued restreamer"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - restreamer" 
+
+
+
+
 
     # Restreamer
     - block:
@@ -65,7 +107,7 @@
             rule: allow
             port: 7102
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
