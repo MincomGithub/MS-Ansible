@@ -32,5 +32,37 @@
             msg: "Setup tasks done!" 
 
 
+    # trilium
+    - block:
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/mssoftware/knowledgebase/trilium
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/mssoftware/knowledgebase/trilium
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 7103
+          ufw:
+            rule: allow
+            port: 7103
+            
+      when: skip|bool   
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued trilium"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - trilium" 
+
+
+
+
 
 
