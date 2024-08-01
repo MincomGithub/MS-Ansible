@@ -32,5 +32,53 @@
             msg: "Setup tasks done!" 
 
 
+    # wazuh
+    # https://documentation.wazuh.com/current/deployment-options/docker/wazuh-container.html
+    - block:
+
+        - name: Creates directory
+          ansible.builtin.file:
+            path: ~/wazuh
+            state: directory
+
+        - name: Checking out MS Software Archittecture Repo
+          ansible.builtin.git:
+            repo: 'https://github.com/wazuh/wazuh-docker.git'
+            dest: ~/wazuh
+            version: v4.8.1
+
+        - name: Docker command to generate certificates
+          ansible.builtin.command:
+            chdir: ~/wazuh/multi-node
+            cmd: docker-compose -f generate-indexer-certs.yml run --rm generator
+
+        - name: Docker command to bring down
+          ansible.builtin.command:
+            chdir: ~/wazuh/multi-node
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/wazuh/multi-node
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 443
+          ufw:
+            rule: allow
+            port: 443
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
+
 
 
