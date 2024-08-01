@@ -33,4 +33,50 @@
 
 
 
+    # Restreamer
+    - block:
+
+        - name: Remove Restreamer's container
+          community.docker.docker_container:
+            name: restreamer
+            state: absent
+
+        - name: Re-create a restreamer container
+          docker_container:
+            name: restreamer
+            image: datarhei/restreamer:latest
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "8080:8080"
+              - "8181:8181"
+              - "1935:1935"
+              - "1936:1936"
+              - "6000:6000/udp"
+            volumes:
+              - /opt/restreamer/config:/core/config
+              - /opt/restreamer/data:/core/data \
+
+        - name: Allow all access to 7102
+          ufw:
+            rule: allow
+            port: 7102
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued restreamer"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - restreamer" 
+
+
+
+
 
