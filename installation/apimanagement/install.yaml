@@ -32,5 +32,46 @@
             msg: "Setup tasks done!" 
 
 
+    
+    # Krakend
+    - block:
+
+        - name: Remove container
+          community.docker.docker_container:
+            name: krakend
+            state: absent
+
+        - name: Re-create a Krakend container
+          docker_container:
+            name: krakend
+            image: devopsfaith/krakend
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "8080:8080"
+            volumes:
+              - krakend:/etc/krakend/
+
+        - name: Allow all access to 8080
+          ufw:
+            rule: allow
+            port: 8080
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
+
 
 
