@@ -36,10 +36,10 @@
     - block:
 
         - name: Clone Airbyte from GitHub
-          ansible.builtin.git:
+          git:
             repo: 'https://github.com/airbytehq/airbyte.git'
             dest: ~/airbyte
-            # depth: 1
+            depth: 1
 
         - name: Start Airbyte
           ansible.builtin.command:
