@@ -17,4 +17,11 @@ Environment  : env
 View         : Installation
 
 
+## Owncast Credentials
+    # url      : 116.290.***.***:8080/admin
+    # username : admin  
+    # password : abc123
+
+
+
 

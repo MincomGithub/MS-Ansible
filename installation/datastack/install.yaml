@@ -32,5 +32,36 @@
             msg: "Setup tasks done!" 
 
 
+    # Airbyte
+    - block:
+
+        - name: Clone Airbyte from GitHub
+          ansible.builtin.git:
+            repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
+            dest: ~/airbyte
+            depth: 1
+
+        - name: Start Airbyte
+          ansible.builtin.command:
+            chdir: ~/airbyte
+            cmd: ./run-ab-platform.sh
+
+        - name: Allow all access to 8000
+          ufw:
+            rule: allow
+            port: 8000
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
 
 
