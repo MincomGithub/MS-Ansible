@@ -32,5 +32,83 @@
             msg: "Setup tasks done!" 
 
 
+    # Metabase
+    - block:
+
+        - name: Remove MySQL container
+          community.docker.docker_container:
+            name: metabase
+            state: absent
+
+        - name: Re-create a MySQL container
+          docker_container:
+            name: metabase
+            image: metabase/metabase
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "3000:3000"
+
+        - name: Allow all access to 3000
+          ufw:
+            rule: allow
+            port: 3000
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued metabase"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - metabase" 
+
+    # Superset
+    - block:
+
+        - name: Creates superset directory
+          ansible.builtin.file:
+            path: /root/superset
+            state: directory
+
+        - name: Checking out MS Software Archittecture Repo
+          ansible.builtin.git:
+            repo: 'https://github.com/apache/superset.git'
+            dest: ~/superset
+            depth: 1
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/superset
+            cmd: docker-compose down
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/superset
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 3000
+          ufw:
+            rule: allow
+            port: 3000
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued superset"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - superset" 
+
+
+
 
 
