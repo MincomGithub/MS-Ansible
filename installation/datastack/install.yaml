@@ -80,9 +80,12 @@
         - name: Initializing Environment
           ansible.builtin.command:
             chdir: ~/airflow
-            cmd: |
-              mkdir ./dags ./logs ./plugins
-              echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
+            cmd: mkdir ./dags ./logs ./plugins
+
+        - name: Initializing Environment
+          ansible.builtin.command:
+            chdir: ~/airflow
+            cmd: echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
 
         - name: Docker init Airflow
           ansible.builtin.command:
