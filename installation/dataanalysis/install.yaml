@@ -57,7 +57,7 @@
             rule: allow
             port: 3000
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -85,19 +85,19 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/superset
-            cmd: docker-compose down
+            cmd: docker compose -f docker-compose-non-dev.yml down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/superset
-            cmd: docker-compose up -d
+            cmd: docker compose -f docker-compose-non-dev.yml up -d
 
-        - name: Allow all access to 3000
+        - name: Allow all access to 8088
           ufw:
             rule: allow
-            port: 3000
+            port: 8088
             
-      when: skip|bool
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:

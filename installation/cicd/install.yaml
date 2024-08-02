@@ -34,3 +34,38 @@
 
 
 
+    # Buddy
+    - block:
+
+        - name: Creates Buddy directory
+          ansible.builtin.file:
+            path: /root/buddy
+            state: directory
+
+        - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/buddy
+            cmd: curl -sSL https://get.buddy.works | sh && buddy install
+
+        - name: Allow all access to 80
+          ufw:
+            rule: allow
+            port: 80
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued superset"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - superset" 
+
+
+
+
+
+
+

@@ -18,3 +18,9 @@ View         : Installation
 
 
 
+
+## superset credentials
+    # http://localhost:8088
+    # user: admin 
+    # password: admin
+
