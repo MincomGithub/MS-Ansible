@@ -117,4 +117,47 @@
             msg: "This task will always run at the end - POSTGRESS" 
 
 
+    # MongoDB
+    - block:
+
+        - name: Remove MongoDB container
+          community.docker.docker_container:
+            name: mongodb
+            state: absent
+
+        - name: Re-create a MongoDB container
+          docker_container:
+            name: mongodb
+            image: mongodb/mongodb-community-server:latest
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "27017:27017"
+            volumes:
+              - mongo_volume:/data/db
+            env:
+              POSTGRES_USER: "postgres"
+              MONGO_INITDB_ROOT_USERNAME: "mongo"
+              MONGO_INITDB_ROOT_PASSWORD: "strong_password"
+
+        - name: Allow all access to 3307
+          ufw:
+            rule: allow
+            port: 3307
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued MongoDB"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - MongoDB" 
+
+
 
