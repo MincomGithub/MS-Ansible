@@ -31,6 +31,54 @@
           ansible.builtin.debug:
             msg: "Setup tasks done!" 
 
+  
+
+    # Duplicati
+    - block:
+
+        - name: Remove container
+          community.docker.docker_container:
+            name: duplicati
+            state: absent
+
+        - name: Re-create a duplicati container
+          docker_container:
+            name: duplicati
+            image: lscr.io/linuxserver/duplicati:latest
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "8200:8200"
+            volumes:
+              - /appdata/config:/config
+              - /backups:/backups
+              - /source:/source
+            env:
+              MYSQL_ROOT_PASSWORD: "strong_password"
+              PGID: "1000"
+              TZ: "Etc/UTC"
+              CLI_ARGS: " `#optional`"
+
+        - name: Allow all access to 8200
+          ufw:
+            rule: allow
+            port: 8200
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued duplicati"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - duplicati" 
+
+
 
 
 

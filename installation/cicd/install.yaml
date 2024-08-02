@@ -52,7 +52,7 @@
             rule: allow
             port: 80
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -62,6 +62,12 @@
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
             msg: "This task will always run at the end - superset" 
+
+
+
+ 
+
+
 
 
 
