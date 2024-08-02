@@ -32,5 +32,48 @@
             msg: "Setup tasks done!" 
 
 
+    # MySQL
+    - block:
+
+        - name: Remove MySQL container
+          community.docker.docker_container:
+            name: uptime-kuma
+            state: absent
+
+        - name: Re-create a MySQL container
+          docker_container:
+            name: final-mysql
+            image: mysql
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "3307:3306"
+            volumes:
+              - /etc/docker/test-mysql:/etc/mysql/conf.d
+              - final-mysql-data:/var/lib/mysql
+            env:
+              MYSQL_ROOT_PASSWORD: "strong_password"
+
+        - name: Allow all access to 3307
+          ufw:
+            rule: allow
+            port: 3307
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued MySQL"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - MySQL" 
+
+
+
 
 
