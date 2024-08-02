@@ -37,7 +37,7 @@
 
         - name: Clone Airbyte from GitHub
           ansible.builtin.git:
-            repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
+            repo: 'https://github.com/airbytehq/airbyte.git'
             dest: ~/airbyte
             depth: 1
 
