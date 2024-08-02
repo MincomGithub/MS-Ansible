@@ -51,7 +51,7 @@
             rule: allow
             port: 8000
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -61,6 +61,54 @@
         - name: This task always runs at the end regardless of outcome
           ansible.builtin.debug:
             msg: "This task will always run at the end - padloc" 
+
+
+
+    # Airflow
+    - block:
+
+        - name: Creates airflow directory
+          ansible.builtin.file:
+            path: ~/airflow
+            state: directory
+
+        - name: Fetching airflow's docker-compose.yaml.
+          ansible.builtin.command:
+            chdir: ~/airflow
+            cmd: curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.0.2/docker-compose.yaml'
+
+        - name: Initializing Environment
+          ansible.builtin.command:
+            chdir: ~/airflow
+            cmd: |
+              mkdir ./dags ./logs ./plugins
+              echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
+
+        - name: Docker init Airflow
+          ansible.builtin.command:
+            chdir: ~/airflow
+            cmd: docker-compose up airflow-init
+
+        - name: Docker command to bring up
+          ansible.builtin.command:
+            chdir: ~/airflow
+            cmd: docker-compose up -d
+
+        - name: Allow all access to 8080
+          ufw:
+            rule: allow
+            port: 8080
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued Airflow"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - Airflow" 
 
 
 
