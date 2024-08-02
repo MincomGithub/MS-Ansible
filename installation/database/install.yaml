@@ -62,7 +62,7 @@
             rule: allow
             port: 3307
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -74,6 +74,47 @@
             msg: "This task will always run at the end - MySQL" 
 
 
+    # POSTGRES
+    - block:
+
+        - name: Remove POSTGRESS container
+          community.docker.docker_container:
+            name: postgres
+            state: absent
+
+        - name: Re-create a POSTGRESS container
+          docker_container:
+            name: postgres
+            image: postgres:14.1-alpine
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "5432:5432"
+            volumes:
+              - /tmp:/var/lib/postgresql/data
+            env:
+              POSTGRES_USER: "postgres"
+              POSTGRES_PASSWORD: "strong_password"
+              PGDATA: "/var/lib/postgresql/data/pgdata"
+
+        - name: Allow all access to 3307
+          ufw:
+            rule: allow
+            port: 3307
+            
+      when: not skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued POSTGRESS"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - POSTGRESS" 
 
 
 
