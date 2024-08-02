@@ -32,5 +32,98 @@
             msg: "Setup tasks done!" 
 
 
+    # Budibase
+    - block:
+
+        - name: Remove budibase container
+          community.docker.docker_container:
+            name: budibase
+            state: absent
+
+        - name: Re-create a budibase container
+          docker_container:
+            name: budibase
+            image: budibase/budibase:latest
+            state: started
+            detach: yes
+            recreate: yes
+            restart: yes
+            restart_policy: always
+            ports:
+              - "10000:80"
+            volumes:
+              - /local/path/data:/data
+
+        - name: Allow all access to 10000
+          ufw:
+            rule: allow
+            port: 10000
+            
+      when: skip|bool
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued budibase"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - budibase" 
+
+        
+
+    # traccar
+    - block:
+
+        - name: Creates traccar directory
+          ansible.builtin.file:
+            path: ~/traccar
+            state: directory
+
+        - name: Download Traccar 4.14, the latest stable release of Traccar
+          ansible.builtin.command:
+            chdir: ~/traccar
+            cmd: wget https://github.com/traccar/traccar/releases/download/v4.14/traccar-linux-64-4.14.zip
+
+        - name: Install Unzip
+          ansible.builtin.command:
+            chdir: ~/traccar
+            cmd: sudo apt install unzip -y
+
+
+        - name: Unzip traccar
+          ansible.builtin.command:
+            chdir: ~/traccar
+            cmd: unzip traccar-linux-64-4.14.zip
+
+        - name: Install Unzip
+          ansible.builtin.command:
+            chdir: ~/traccar
+            cmd: ./traccar.run
+
+
+        - name: Install Unzip
+          ansible.builtin.command:
+            chdir: ~/traccar
+            cmd: systemctl start traccar
+            
+        - name: Allow all access to 8082
+          ufw:
+            rule: allow
+            port: 8082
+            
+      when: skip|bool   
+      rescue:
+        - name: rescue task that runs if any task fails inside block
+          ansible.builtin.debug:
+            msg: "Task Rescued padloc"
+            
+      always:
+        - name: This task always runs at the end regardless of outcome
+          ansible.builtin.debug:
+            msg: "This task will always run at the end - padloc" 
+
+
+
 
 
