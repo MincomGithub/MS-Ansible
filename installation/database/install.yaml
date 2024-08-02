@@ -42,7 +42,7 @@
 
         - name: Re-create a MySQL container
           docker_container:
-            name: final-mysql
+            name: mysql
             image: mysql
             state: started
             detach: yes
