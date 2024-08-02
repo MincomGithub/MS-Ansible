@@ -67,20 +67,25 @@
     # Airflow
     - block:
 
-        - name: Creates airflow directory
+        - name: Creates airflow/dags directory
           ansible.builtin.file:
-            path: ~/airflow
+            path: ~/airflow/dags
+            state: directory
+
+        - name: Creates airflow/logs directory
+          ansible.builtin.file:
+            path: ~/airflow/logs
+            state: directory
+
+        - name: Creates airflow/plugins directory
+          ansible.builtin.file:
+            path: ~/airflow/plugins
             state: directory
 
         - name: Fetching airflow's docker-compose.yaml.
           ansible.builtin.command:
             chdir: ~/airflow
             cmd: curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.0.2/docker-compose.yaml'
-
-        - name: Initializing Environment
-          ansible.builtin.command:
-            chdir: ~/airflow
-            cmd: mkdir ./dags ./logs ./plugins
 
         - name: Initializing Environment
           ansible.builtin.command:
