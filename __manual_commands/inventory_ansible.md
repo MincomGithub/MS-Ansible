@@ -25,13 +25,13 @@
 [Monitoring]
 192.168.1.135
 
-[Data]
+[DataAnalysis]
 192.168.1.143
 
 [Api]
 192.168.1.138
 
-[Data]
+[DataStack]
 192.168.1.139
 
 [Drone]
