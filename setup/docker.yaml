@@ -8,11 +8,11 @@
     default_container_command: sleep 1d
 
   tasks:
-    # - name: Install aptitude
-    #   apt:
-    #     name: aptitude
-    #     state: latest
-    #     update_cache: true
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: false
 
     - name: Install required system packages
       apt:
@@ -25,7 +25,7 @@
           - virtualenv
           - python3-setuptools
         state: latest
-        update_cache: true
+        update_cache: false
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -41,7 +41,7 @@
       apt:
         name: docker-ce
         state: latest
-        update_cache: true
+        update_cache: false
 
     - name: Install Docker Module for Python
       pip:
