@@ -1,0 +1,38 @@
+---
+- name: Update and upgrade apt packages
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update packages with apt
+      when: ansible_pkg_mgr == 'apt'
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Upgrade packages with apt
+      when: ansible_pkg_mgr == 'apt'
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Install Docker
+      hosts: ubuntu
+      become: true
+      tasks:
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [docker.com/repo]
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
