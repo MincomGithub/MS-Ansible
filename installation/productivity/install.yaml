@@ -29,7 +29,7 @@
 
         - name: Update apt and install docker-ce
           apt:
-            name: docker-ce
+            name: docker
             state: latest
         
         - name: Install Docker Module for Python
@@ -79,7 +79,7 @@
             rule: allow
             port: 7201
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
