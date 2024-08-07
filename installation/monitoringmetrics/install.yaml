@@ -48,7 +48,7 @@
             port: 19999
 
         # Manual Edit IP to server's IP
-        # 1. sudo vim /etc/netdata/netdata.conf
+        # 1. sudo vim /etc/netdata/netdata.conf    192.168.1.132
         # 2. systemctl restart netdata
         # 3. systemctl status netdata
 
@@ -91,7 +91,7 @@
 
             
             
-      when: skip|bool  
+      when: not skip|bool  
       # Credentials
       # admin/admin
       rescue:
