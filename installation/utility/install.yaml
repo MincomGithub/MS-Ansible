@@ -51,10 +51,10 @@
             chdir: ~/mssoftware/utility/passbolt
             cmd: docker-compose up -d
 
-        - name: Allow all access to 7103
+        - name: Allow all access to 7003
           ufw:
             rule: allow
-            port: 7101
+            port: 7003
             
       when: not skip|bool
       rescue:
@@ -96,7 +96,7 @@
             rule: allow
             port: 7102
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
