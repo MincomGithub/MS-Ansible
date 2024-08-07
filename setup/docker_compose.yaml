@@ -1,15 +1,10 @@
 ---
 - hosts: all
   become: true
-  vars:
-    container_count: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
 
   tasks:
-    - name: Install aptitude
+    - name: Install docker-compose
       apt:
-        name: aptitude
+        name: docker-compose
         state: latest
         update_cache: false
