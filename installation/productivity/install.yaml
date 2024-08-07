@@ -52,7 +52,7 @@
     - block:
 
         - name: Remove container
-          community.docker.docker_container:
+          docker_container:
             name: baserow
             state: absent
 
