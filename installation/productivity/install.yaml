@@ -17,7 +17,7 @@
             path: /root/mssoftware
             state: directory
         - name: Checking out MS Software Archittecture Repo
-          ansible.builtin.git:
+          git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
         
