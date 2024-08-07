@@ -56,7 +56,7 @@
             volumes:
               - baserow_data:/baserow/data 
             env:
-              BASEROW_PUBLIC_URL: "http://192.168.1.103:7201"
+              BASEROW_PUBLIC_URL: "http://192.168.1.115:7201"
               WEB_FRONTEND_PORT: "7201"
 
         - name: Allow all access to 7201
@@ -93,6 +93,11 @@
             cmd: ./setup.sh
 
         - name: Docker command to pull down
+          ansible.builtin.command:
+            chdir: ~/plane
+            cmd: docker compose -f docker compose-local.yml down
+
+        - name: Docker command to pull up
           ansible.builtin.command:
             chdir: ~/plane
             cmd: docker compose -f docker compose-local.yml up -d
