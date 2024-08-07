@@ -56,7 +56,7 @@
             rule: allow
             port: 7001
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -92,7 +92,7 @@
             rule: allow
             port: 7002
 
-      when: not skip|bool  
+      when: skip|bool  
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:

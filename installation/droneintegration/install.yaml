@@ -50,15 +50,20 @@
             restart: yes
             restart_policy: always
             ports:
-              - "8080:8080"
-              - "1935:1935"
+              - "8088:8080"
+              - "8935:1935"
             volumes:
               - ./data:/app/data
 
-        - name: Allow all access to 7102
+        - name: Allow all access to 8088
           ufw:
             rule: allow
-            port: 7102
+            port: 8088
+
+        - name: Allow all access to 8935
+          ufw:
+            rule: allow
+            port: 8935
             
       when: not skip|bool
       rescue:
@@ -102,12 +107,12 @@
               - /opt/restreamer/config:/core/config
               - /opt/restreamer/data:/core/data \
 
-        - name: Allow all access to 7102
+        - name: Allow all access to 8080
           ufw:
             rule: allow
-            port: 7102
+            port: 8080
             
-      when: skip|bool
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
