@@ -59,7 +59,7 @@
             rule: allow
             port: 10000
             
-      when: skip|bool
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -102,7 +102,7 @@
             cmd: ./traccar.run
 
 
-        - name: Install Unzip
+        - name: Install traccar
           ansible.builtin.command:
             chdir: ~/traccar
             cmd: systemctl start traccar
