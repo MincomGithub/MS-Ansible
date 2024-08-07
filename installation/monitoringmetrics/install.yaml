@@ -34,10 +34,6 @@
     # Netdata
     - block:
 
-        - name: Update all packages to their latest version
-          ansible.builtin.apt:
-            name: "*"
-            state: latest
 
         - name: Install netdata (state=present is optional)
           ansible.builtin.apt:
