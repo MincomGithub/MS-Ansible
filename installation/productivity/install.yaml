@@ -26,7 +26,16 @@
           git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
             dest: ~/mssoftware
+
+        - name: Update apt and install docker-ce
+          apt:
+            name: docker-ce
+            state: latest
         
+        - name: Install Docker Module for Python
+          pip:
+            name: docker
+            
       rescue:
         - name: rescue task that runs on setup fail
           ansible.builtin.debug:
