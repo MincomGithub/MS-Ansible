@@ -2,6 +2,8 @@
 - name: Install Main VM's softwares
   hosts: all
   become: true
+  vars:
+      - skip: false
 
   tasks:
 
@@ -52,6 +54,7 @@
         # 2. systemctl restart netdata
         # 3. systemctl status netdata
 
+      when: not skip|bool  
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
