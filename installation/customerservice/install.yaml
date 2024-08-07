@@ -48,7 +48,7 @@
         - name: Download the Docker compose template
           ansible.builtin.command:
             chdir: ~/chatwoot
-            cmd: wget -O docker-compose.yaml https://raw.githubusercontent.com/chatwoot/chatwoot/develop/docker-compose.production.yaml
+            cmd: wget -O docker compose.yaml https://raw.githubusercontent.com/chatwoot/chatwoot/develop/docker compose.production.yaml
 
         - name: Docker command to pull down
           ansible.builtin.command:

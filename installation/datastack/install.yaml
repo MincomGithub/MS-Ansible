@@ -82,10 +82,10 @@
             path: ~/airflow/plugins
             state: directory
 
-        - name: Fetching airflow's docker-compose.yaml.
+        - name: Fetching airflow's docker compose.yaml.
           ansible.builtin.command:
             chdir: ~/airflow
-            cmd: curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.0.2/docker-compose.yaml'
+            cmd: curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.0.2/docker compose.yaml'
 
         - name: Initializing Environment
           ansible.builtin.command:
@@ -95,12 +95,12 @@
         - name: Docker init Airflow
           ansible.builtin.command:
             chdir: ~/airflow
-            cmd: docker-compose up airflow-init
+            cmd: docker compose up airflow-init
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/airflow
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 8080
           ufw:

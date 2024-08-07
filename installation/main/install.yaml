@@ -44,12 +44,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/main/homepage
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 7001
           ufw:
@@ -80,12 +80,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/main/dashy
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 7002
           ufw:

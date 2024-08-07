@@ -18,7 +18,7 @@
     # - ansible.builtin.debug:
     #     var: output
 
-    # - name: Run `docker-compose up` again
+    # - name: Run `docker compose up` again
     #   community.general.docker_compose:
     #     project_src: ~/mssoftware/main/homepage
     #     build: no

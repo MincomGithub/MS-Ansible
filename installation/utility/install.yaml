@@ -44,12 +44,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/passbolt
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/passbolt
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 7003
           ufw:
@@ -114,12 +114,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/nginxproxymanager
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/nginxproxymanager
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 7103
           ufw:

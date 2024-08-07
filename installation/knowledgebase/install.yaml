@@ -38,12 +38,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/knowledgebase/trilium
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/knowledgebase/trilium
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 4292
           ufw:

@@ -50,17 +50,17 @@
         - name: Docker command to generate certificates
           ansible.builtin.command:
             chdir: ~/wazuh/single-node  #multi-node #single-node 
-            cmd: docker-compose -f generate-indexer-certs.yml run --rm generator
+            cmd: docker compose -f generate-indexer-certs.yml run --rm generator
 
         - name: Docker command to bring down
           ansible.builtin.command:
             chdir: ~/wazuh/single-node  #multi-node #single-node 
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/wazuh/single-node  #multi-node #single-node 
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 443
           ufw:

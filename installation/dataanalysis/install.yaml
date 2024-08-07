@@ -85,12 +85,12 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/superset
-            cmd: docker compose -f docker-compose-non-dev.yml down
+            cmd: docker compose -f docker compose-non-dev.yml down
 
         - name: Docker command to bring up
           ansible.builtin.command:
             chdir: ~/superset
-            cmd: docker compose -f docker-compose-non-dev.yml up -d
+            cmd: docker compose -f docker compose-non-dev.yml up -d
 
         - name: Allow all access to 8088
           ufw:

@@ -95,7 +95,7 @@
         - name: Docker command to pull down
           ansible.builtin.command:
             chdir: ~/plane
-            cmd: docker compose -f docker-compose-local.yml up -d
+            cmd: docker compose -f docker compose-local.yml up -d
 
 
       when: skip|bool

@@ -72,12 +72,12 @@
         - name: Docker command to pull down grafanaprometheus
           ansible.builtin.command:
             chdir: ~/mssoftware/monitoringmetrics/grafanaprometheus
-            cmd: docker-compose down
+            cmd: docker compose down
 
         - name: Docker command to bring up grafanaprometheus
           ansible.builtin.command:
             chdir: ~/mssoftware/monitoringmetrics/grafanaprometheus
-            cmd: docker-compose up -d
+            cmd: docker compose up -d
 
         - name: Allow all access to 3000
           ufw:
