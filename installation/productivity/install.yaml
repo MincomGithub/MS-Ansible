@@ -56,7 +56,7 @@
             volumes:
               - baserow_data:/baserow/data 
             env:
-              BASEROW_PUBLIC_URL: "http://146.190.144.209:7201"
+              BASEROW_PUBLIC_URL: "http://192.168.1.103:7201"
               WEB_FRONTEND_PORT: "7201"
 
         - name: Allow all access to 7201

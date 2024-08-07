@@ -125,6 +125,12 @@
           ufw:
             rule: allow
             port: 7103
+
+        - name: Allow all access to 7104
+          ufw:
+            rule: allow
+            port: 7104
+            
             
       when: not skip|bool   
       rescue:
