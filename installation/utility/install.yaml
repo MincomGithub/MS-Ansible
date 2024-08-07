@@ -41,12 +41,12 @@
             path: ~/passbolt
             state: directory
 
-        - name: Docker command to pull down
+        - name: Docker command to passbolt pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/passbolt
             cmd: docker compose down
 
-        - name: Docker command to bring up
+        - name: Docker command to passbolt bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/passbolt
             cmd: docker compose up -d
@@ -56,7 +56,7 @@
             rule: allow
             port: 7003
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
@@ -111,12 +111,12 @@
     # nginxproxymanager
     - block:
 
-        - name: Docker command to pull down
+        - name: Docker command to nginxproxymanager pull down
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/nginxproxymanager
             cmd: docker compose down
 
-        - name: Docker command to bring up
+        - name: Docker command to nginxproxymanager bring up
           ansible.builtin.command:
             chdir: ~/mssoftware/utility/nginxproxymanager
             cmd: docker compose up -d
@@ -126,7 +126,7 @@
             rule: allow
             port: 7103
             
-      when: skip|bool   
+      when: not skip|bool   
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
