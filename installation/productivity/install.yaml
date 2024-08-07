@@ -16,6 +16,12 @@
           ansible.builtin.file:
             path: /root/mssoftware
             state: directory
+
+        - name: Install Git
+          apt:
+            name: git
+            state: present
+            
         - name: Checking out MS Software Archittecture Repo
           git:
             repo: 'https://github.com/MincomGithub/MS-Software-Architecture.git'
