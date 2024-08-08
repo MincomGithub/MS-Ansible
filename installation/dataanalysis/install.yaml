@@ -82,12 +82,12 @@
             dest: ~/superset
             depth: 1
 
-        - name: Docker command to pull down
+        - name: Docker command to pull down superset
           ansible.builtin.command:
             chdir: ~/superset
             cmd: docker compose -f docker-compose-non-dev.yml down
 
-        - name: Docker command to bring up
+        - name: Docker command to bring up superset
           ansible.builtin.command:
             chdir: ~/superset
             cmd: docker compose -f docker-compose-non-dev.yml up -d
@@ -97,7 +97,7 @@
             rule: allow
             port: 8088
             
-      when: not skip|bool
+      when: skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
