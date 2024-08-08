@@ -51,7 +51,7 @@
             rule: allow
             port: 8000
             
-      when: skip|bool
+      when: not skip|bool
       rescue:
         - name: rescue task that runs if any task fails inside block
           ansible.builtin.debug:
